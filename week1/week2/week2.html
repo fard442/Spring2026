@@ -8,11 +8,43 @@
     <body>
         <h1>Week 2 | Java Lab</h1>
         <span id="message"></span>
+        <h2>Button Clicker</h2>
+        <h3 id="output">0</h3>
+        <input type="button" value="clickme bruh" id="btn">
+        <input type="button" value="Kill All Clicks" id="btn-reset">
 
         <!-- javascript example -->
          <script>
-            var message = "Hello people how do you fare?";
-            alert(message);
+            var name = prompt("What do They call you around here?");
+            var message = `Hello ${name}, how do you fare?`;
+            // alert(message);
+            var spanMessage = document.getElementById("message");
+            spanMessage.innerHTML = message;
+
+            //clicker game code
+            var clickerButton = document.querySelector("#btn");
+            var clearButton = document.querySelector("#btn-reset");
+            var clickerOutput = document.querySelector("#output");
+            var clicks = 0;
+            var clickByAmount = 1;
+
+            //how event handler works I guess
+            clickerButton.addEventListener("click", function(){
+                clicks+=clickByAmount;
+                displayClickerScore(clicks);
+                if (clicks == 30){
+                    alert("bingle 30 drive");
+                }
+            });
+
+            clearButton.addEventListener("click", function(){
+                clicks = 0;
+                displayClickerScore(clicks);
+            });
+
+            function displayClickerScore(clicks){
+                clickerOutput.innerHTML = clicks;
+            }
          </script>
     </body>
 </html>
