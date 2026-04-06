@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Week 3: drawing on canvas Lab
+        </title>
+        <meta charset="UTF-8">
+    </head>
+
+    <body>
+        <h1>Canvas drawing example</h1>
+        <canvas id="canvas" width="800" height="600" style="border: 1px solid black"></canvas>
+
+        <script>
+            //setting up the canvas
+            var canvas = document.getElementById("canvas");
+            var pencil = canvas.getContext("2d");
+
+            //red rectangle
+            pencil.fillStyle = "red";
+            pencil.fillRect(50, 50, 150, 50);
+
+            //unknown
+            pencil.fillStyle = "#f0a";
+            pencil.fillRect(50, 125, 150, 50)
+        </script>
+    </body>
+</html>
