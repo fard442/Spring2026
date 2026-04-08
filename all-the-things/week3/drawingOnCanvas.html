@@ -31,6 +31,63 @@
             //final purple boxy
             pencil.strokeStyle = "#f0f";
             pencil.strokeRect(50, 350, 150, 50);
+
+            //cical
+            pencil.beginPath();
+            pencil.strokeStyle = "#0f0";
+            //the next step of the operation between here
+            pencil.arc(500, 200, 20, 0, 2*Math.PI);
+            //and here. (makes circle)
+            pencil.stroke();
+
+            //circle2
+            pencil.beginPath();
+            pencil.strokeStyle = "#f00";
+            pencil.arc(500, 250, 20, 0, 2*Math.PI);
+            pencil.stroke();
+
+            //circle 3: Filled.
+            pencil.beginPath();
+            pencil.fillStyle = "yellow";
+            pencil.arc(500, 300, 20, 0, 2*Math.PI);
+            pencil.fill();
+
+            //circle 4: The Outling.
+            pencil.beginPath();
+            pencil.lineWidth= 5;
+            pencil.strokeStyle = "#0ff";
+            pencil.fillStyle = "#000";
+            pencil.arc(550, 300, 20, 0, 2*Math.PI);
+            pencil.fill();
+            pencil.stroke();
+
+            //3 angel
+            pencil.lineWidth = 1;
+            pencil.beginPath();
+            pencil.moveTo(50, 450);
+            pencil.lineTo(75, 500);
+            pencil.lineTo(25, 500);
+            pencil.lineTo(50, 450);
+            pencil.stroke();
+
+            //a second fangle
+            pencil.beginPath();
+            pencil.strokeStyle = "orange"
+            pencil.moveTo(200, 450);
+            pencil.lineTo(225, 500);
+            pencil.lineTo(175, 500);
+            pencil.lineTo(200, 450);
+            pencil.stroke();
+
+            //filled 3: the trequal
+            pencil.beginPath();
+            pencil.fillStyle = "#00f"
+            pencil.moveTo(125, 450);
+            pencil.lineTo(150, 500);
+            pencil.lineTo(100, 500);
+            pencil.lineTo(125, 450);
+            pencil.fill();
+
         </script>
     </body>
 </html>
