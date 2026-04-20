@@ -134,7 +134,8 @@ function main()
     HINT: You will have to research how this works 
     W3schools.com and your book can help
     -----------------------------------*/
-    
+    ctx.font = "64px Arial";
+    ctx.fillText(score, 35, 50);
 }
 
 //random number generator
