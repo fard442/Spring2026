@@ -60,6 +60,24 @@ for(var i=0; i<10; i++){
 function game(){
     pen.clearRect(0, 0, canvas.width, canvas.height);
 
+
+    if(w || up) //very shortened (w == true || up == true) code
+    {
+        player.y -= 2;
+    }
+    if(s || down)
+    {
+        player.y += 2;
+    }
+    if(a || left)
+    {
+        player.x -= 2;
+    }
+    if(d || right)
+    {
+        player.x += 2;
+    }
+    
     //myBall.drawBall();
     player.drawSquare();
 
