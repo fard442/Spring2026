@@ -6,7 +6,7 @@ setInterval(game, interval);
 
 function createGameObject(){
     var gameObject = {
-        x:randomNumber(15, canvas.width - 15),
+        x:randomNumber(115, canvas.width - 115),
         y:randomNumber(15, canvas.height - 15),
         moveX:setRandomNumber(),
         moveY:setRandomNumber(),
@@ -55,6 +55,7 @@ player.color = "purple";
 
 for(var i=0; i<10; i++){
     myBalls[i] = createGameObject();
+    // myBalls[i].moveY = -myBalls[i].moveY;
 }
 
 function game(){
@@ -84,21 +85,31 @@ function game(){
     for(var i=0; i<myBalls.length; i++){
         myBalls[i].drawBall();
 
-        if(myBalls[i].x > canvas.width - myBalls[i].radius){
+        //right
+        if(myBalls[i].x > canvas.width - myBalls[i].radius - 100){
             myBalls[i].moveX *= -1;
-        }
-        if(myBalls[i].y > canvas.height - myBalls[i].radius){
-            myBalls[i].moveY *= -1;
-        }
-        if(myBalls[i].x < myBalls[i].radius){
-            myBalls[i].moveX *= -1;
-        }
-        if(myBalls[i].y < myBalls[i].radius){
-            myBalls[i].moveY *= -1;
+            myBalls[i].y += myBalls[i].radius*3;
         }
 
+        //bottom
+        if(myBalls[i].y > canvas.height + myBalls[i].radius){
+            // myBalls[i].moveY *= -1;
+            myBalls[i].y = -randomNumber(0, 50);
+        }
+
+        //left
+        if(myBalls[i].x < myBalls[i].radius + 100){
+            myBalls[i].moveX *= -1;
+            myBalls[i].y += myBalls[i].radius*3;
+        }
+
+        //top
+        // if(myBalls[i].y < myBalls[i].radius){
+        //     myBalls[i].moveY *= -1;
+        // }
+
         myBalls[i].x += myBalls[i].moveX;
-        myBalls[i].y += myBalls[i].moveY;
+        // myBalls[i].y += myBalls[i].moveY;
 
         // myBalls[i].color = `rgb(${randomNumber(0,255)}, ${randomNumber(0,255)}, ${randomNumber(0,255)})`;
         // myBalls[i].radius = setRandomNumber() * ;

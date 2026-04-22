@@ -1,0 +1,1 @@
+Player collects 50 objects to win, each collection of a point spawns a trap that takes one of their 10 health away. Timer is also included for highscores.
