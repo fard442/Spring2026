@@ -5,6 +5,7 @@ var w = false;
 var a = false;
 var s = false;
 var d = false;
+var spaceBar = false;
 
 var up = false;
 var down = false;
@@ -48,6 +49,11 @@ function keydown(e)
     {
         right = true;
     }
+
+    if(e.keyCode == 32)
+    {
+        spaceBar = true;
+    }
 }
 
 function keyup(e)
@@ -86,5 +92,10 @@ function keyup(e)
     if(e.key == "ArrowRight")
     {
         right = false;
+    }
+
+    if(e.keyCode == 32)
+    {
+        spaceBar = false;
     }
 }
