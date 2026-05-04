@@ -192,6 +192,8 @@ function game(){
             for(var b = bullets.length - 1; b >= 0; b--){
                     bullets[b].x += bullets[b].velocityX;
                     bullets[b].y += bullets[b].velocityY;
+                    //draw bullet
+                    bullets[b].drawSquare();
 
                     if(bullets[b].y + bullets[b].height < 0){
                         //kill bullet if off screen
@@ -213,8 +215,7 @@ function game(){
                         }
                     }
 
-                    //draw bullet
-                    bullets[b].drawSquare();
+                    
             }
             drawHUD();
             break;
