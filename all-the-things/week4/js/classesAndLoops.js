@@ -7,6 +7,11 @@ setInterval(game, interval);
 var acceleration = 0.6; 
 var friction = 0.88;
 var maxSpeed = 1;
+var numberOfShips;
+var score = 0;
+
+//ship sprite
+var ship = document.getElementById("ship");
 
 function createGameObject(){
     var gameObject = {
@@ -20,6 +25,7 @@ function createGameObject(){
         radius:15,
         width:15,
         height:15,
+        sprite:"ship",
         drawBall:function()
         {
             pen.beginPath();
@@ -31,6 +37,10 @@ function createGameObject(){
         {
             pen.fillStyle = this.color;
             pen.fillRect(this.x, this.y, this.width, this.height);
+        },
+        drawSprite:function()
+        {
+            pen.drawImage(this.sprite, this.x, this.y, this.width, this.height);
         }
     }
     return gameObject;
@@ -59,6 +69,12 @@ player.y = canvas.height/2;
 player.width = 30;
 player.height = 30;
 player.color = "purple";
+player.sprite = ship;
+
+//game state machine
+var states = ["game", "win"];
+states = "game";
+
 
 var bullets = [];
 var canShoot = true;
@@ -83,98 +99,132 @@ for(var i=0; i < numberOfDots; i++){
     // myBalls[i].moveY = -myBalls[i].moveY;
 }
 
+function drawHUD(){
+    pen.fillStyle = "black";
+    pen.font = "14px Arial";
+    pen.fillText(`Ships Defeated: ${score} | Ships Left: ${numberOfShips}`, 10, 25)
+}
+
 function game(){
     pen.clearRect(0, 0, canvas.width, canvas.height);
 
-
-    if(w || up) //very shortened (w == true || up == true) code
-    {
-        // player.y -= 2;
-        player.velocityY -= acceleration;
-    }
-    if(s || down)
-    {
-        // player.y += 2;
-        player.velocityY += acceleration;
-    }
-    if(a || left)
-    {
-        // player.x -= 2;
-        player.velocityX -= acceleration;
-    }
-    if(d || right)
-    {
-        // player.x += 2;
-        player.velocityX += acceleration;
-    }
-    if(spaceBar && canShoot)
-    {
-        shoot();
-    }
-    
-    //bring velocity back to zero
-    player.velocityY *= friction;
-    player.velocityX *= friction;
-
-    //update player pos.
-    player.x += player.velocityX;
-    player.y += player.velocityY;
-
-    //myBall.drawBall();
-    player.drawSquare();
-
-    for(var i=0; i<myBalls.length; i++){
-        myBalls[i].drawBall();
-
-        //right
-        if(myBalls[i].x > canvas.width - myBalls[i].radius - 100){
-            myBalls[i].moveX *= -1;
-            myBalls[i].y += myBalls[i].radius*3;
-        }
-
-        //bottom
-        if(myBalls[i].y > canvas.height + myBalls[i].radius){
-            // myBalls[i].moveY *= -1;
-            myBalls[i].y = -randomNumber(0, 50);
-        }
-
-        //left
-        if(myBalls[i].x < myBalls[i].radius + 100){
-            myBalls[i].moveX *= -1;
-            myBalls[i].y += myBalls[i].radius*3;
-        }
-
-        //top
-        // if(myBalls[i].y < myBalls[i].radius){
-        //     myBalls[i].moveY *= -1;
-        // }
-        
-        myBalls[i].x += myBalls[i].moveX;
-        // myBalls[i].y += myBalls[i].moveY;
-
-        // myBalls[i].color = `rgb(${randomNumber(0,255)}, ${randomNumber(0,255)}, ${randomNumber(0,255)})`;
-        // myBalls[i].radius = setRandomNumber() * ;
-    }
-
-    for(var b = bullets.length - 1; b >= 0; b--){
-            bullets[b].x += bullets[b].velocityX;
-            bullets[b].y += bullets[b].velocityY;
-
-            if(bullets[b] + bullets[b].height < 0){
-                bullets.splice(b,1);
+    switch(states){
+        case "game":
+            //b
+            numberOfShips = myBalls.length;
+            if(numberOfShips <= 0){
+                states = "win";
             }
-            
-            for(var eBalls = 0; eBalls < myBalls.length; eBalls++){
-                //distance formula unknown
-                var distX = bullets[b].x - myBalls[eBalls].x;
-                var distY = bullets[b].y - myBalls[eBalls].y;
-                var dist = Math.sqrt((distX * distX) + (distY * distY));
-                if(dist < myBalls[eBalls].radius){
-                    myBalls.splice(myBalls[eBalls], 1);
+            if(w || up) //very shortened (w == true || up == true) code
+                {
+                // player.y -= 2;
+                player.velocityY -= acceleration;
                 }
+            if(s || down)
+            {
+                // player.y += 2;
+                player.velocityY += acceleration;
+            }
+            if(a || left)
+            {
+                // player.x -= 2;
+                player.velocityX -= acceleration;
+            }
+            if(d || right)
+            {
+                // player.x += 2;
+                player.velocityX += acceleration;
+            }
+            if(spaceBar && canShoot)
+            {
+                shoot();
+            }
+    
+            //bring velocity back to zero
+            player.velocityY *= friction;
+            player.velocityX *= friction;
+
+            //update player pos.
+            player.x += player.velocityX;
+            player.y += player.velocityY;
+
+            //myBall.drawBall();
+
+            //draw sprite for player
+            player.drawSprite();
+            // player.drawSquare();
+
+            for(var i=0; i<myBalls.length; i++){
+                myBalls[i].drawBall();
+
+                //right
+                if(myBalls[i].x > canvas.width - myBalls[i].radius - 100){
+                    myBalls[i].moveX *= -1;
+                    myBalls[i].y += myBalls[i].radius*3;
+                }
+
+                //bottom
+                if(myBalls[i].y > canvas.height + myBalls[i].radius){
+                    // myBalls[i].moveY *= -1;
+                    myBalls[i].y = -randomNumber(0, 50);
+                }
+
+                //left
+                if(myBalls[i].x < myBalls[i].radius + 100){
+                    myBalls[i].moveX *= -1;
+                    myBalls[i].y += myBalls[i].radius*3;
+                }
+
+                //top
+                // if(myBalls[i].y < myBalls[i].radius){
+                //     myBalls[i].moveY *= -1;
+                // }
+        
+                myBalls[i].x += myBalls[i].moveX;
+                // myBalls[i].y += myBalls[i].moveY;
+
+                // myBalls[i].color = `rgb(${randomNumber(0,255)}, ${randomNumber(0,255)}, ${randomNumber(0,255)})`;
+                // myBalls[i].radius = setRandomNumber() * ;
             }
 
-            //draw bullet
-            bullets[b].drawSquare();
+
+            //collision of bullets and balls
+            for(var b = bullets.length - 1; b >= 0; b--){
+                    bullets[b].x += bullets[b].velocityX;
+                    bullets[b].y += bullets[b].velocityY;
+
+                    if(bullets[b].y + bullets[b].height < 0){
+                        //kill bullet if off screen
+                        bullets.splice(b,1);
+                    }
+            
+                    for(var eBalls = 0; eBalls < myBalls.length; eBalls++){
+                        //distance formula unknown
+                        var distX = bullets[b].x - myBalls[eBalls].x;
+                        var distY = bullets[b].y - myBalls[eBalls].y;
+                        var dist = Math.sqrt((distX * distX) + (distY * distY));
+
+                        if(dist < myBalls[eBalls].radius){
+                            //remove ball from screen if shot
+                            score++;
+                            myBalls.splice(eBalls, 1);
+                            bullets.splice(b, 1);
+                            break;
+                        }
+                    }
+
+                    //draw bullet
+                    bullets[b].drawSquare();
+            }
+            drawHUD();
+            break;
+
+        case "win":
+            //w
+            pen.fillStyle = "black";
+            pen.font = "24px Arial";
+            var text = "You Won";
+            pen.fillText(text, canvas.width/2 - pen.measureText(text).width/2, canvas.height/2 - 20);
+        break;
     }
 }
