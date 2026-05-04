@@ -198,6 +198,7 @@ function game(){
                     if(bullets[b].y + bullets[b].height < 0){
                         //kill bullet if off screen
                         bullets.splice(b,1);
+                        continue;
                     }
             
                     for(var eBalls = 0; eBalls < myBalls.length; eBalls++){
