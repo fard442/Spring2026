@@ -166,6 +166,10 @@ function game(){
             pen.font = "24px Arial";
             var text = "You Won";
             pen.fillText(text, canvas.width/2 - pen.measureText(text).width/2, canvas.height/2 - 20);
+            if(spaceBar)
+            {
+                console.log("test")
+            }
         break;
     }
 }
