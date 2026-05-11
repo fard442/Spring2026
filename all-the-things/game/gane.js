@@ -15,8 +15,12 @@ var timer = 0; //for the clock in game
 
 //rat sprite
 var rat = document.getElementById("rat");
+
+//trap sprite
 //var trap = document.getElementById
-//var collectable = document.getElementById
+
+//cheese sprite
+var collectable = document.getElementById("cheese");
 
 function createGameObject(){
     var gameObject = {
@@ -33,6 +37,7 @@ function createGameObject(){
         width:15,
         height:15,
         spritePlayer:"rat",
+        spriteCollectable:"cheese",
         drawBall:function()
         {
             pen.beginPath();
@@ -45,9 +50,13 @@ function createGameObject(){
             pen.fillStyle = this.color2;
             pen.fillRect(this.x, this.y, this.width, this.height);
         },
-        drawspritePlayer:function()
+        drawSpritePlayer:function()
         {
             pen.drawImage(this.spritePlayer, this.x - 35, this.y - 50, this.width, this.height);
+        },
+        drawSpriteCollectable:function()
+        {
+            pen.drawImage(this.spriteCollectable, this.x - 17, this.y - 17, this.width + 20, this.height + 15);
         }
     }
     return gameObject;
@@ -85,6 +94,7 @@ states = "game";
 
 for(var i=0; i < numberOfDots; i++){
     myBalls[i] = createGameObject();
+    myBalls[i].spriteCollectable = cheese;
 }
 
 
@@ -137,10 +147,10 @@ function game(){
 
             //draw sprite for player
             // player.drawBall();
-            player.drawspritePlayer();
+            player.drawSpritePlayer();
 
             for(var i=0; i<myBalls.length; i++){
-                myBalls[i].drawBall();
+                myBalls[i].drawSpriteCollectable();
             }
 
 
@@ -184,6 +194,7 @@ function game(){
             {
                 for(var i=0; i < numberOfDots; i++){
                     myBalls[i] = createGameObject();
+                    myBalls[i].spriteCollectable = cheese;
                 }
                 timer = 0;
                 score = 0;
