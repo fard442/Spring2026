@@ -40,7 +40,7 @@ function createGameObject(){
         height:15,
         spritePlayer:"rat",
         spriteCollectable:"cheese",
-        spriteTrap
+        spriteTrap:"ratTrap",
         drawBall:function()
         {
             pen.beginPath();
@@ -63,7 +63,7 @@ function createGameObject(){
         },
         drawSpriteTrap:function()
         {
-            pen.drawImage(this.spriteTrap)
+            pen.drawImage(this.spriteTrap, this.x - 15, this.y - 15, this.width + 30, this.height + 30);
         }
     }
     return gameObject;
@@ -89,7 +89,7 @@ var numberOfTraps = 0;
 
 for(var i=0; i < numberOfTraps; i++){
     trapIndex[i] = createGameObject();
-    // trapIndex[i].sprite;
+    trapIndex[i].spriteTrap = ratTrap;
 }
 
 //cheese object is myBall
@@ -178,7 +178,7 @@ function game(){
             }
 
             for(var i=0; i<trapIndex.length; i++){
-                trapIndex[i].drawTrap();
+                trapIndex[i].drawSpriteTrap();
             }
 
 
@@ -189,13 +189,13 @@ function game(){
                 var distY = player.y - myBalls[eBalls].y;
                 var dist = Math.sqrt((distX * distX) + (distY * distY));
 
-                if(dist < myBalls[eBalls].radius){
+                if(dist <= myBalls[eBalls].radius){
                     //remove cheese from screen if hit
                     score++;
                     numberOfTraps++;
                     for(var i=0; i < numberOfTraps; i++){
                         trapIndex[i] = createGameObject();
-                        // trapIndex[i].sprite;
+                        trapIndex[i].spriteTrap = ratTrap;
                     }
                     myBalls.splice(eBalls, 1);
                     break;
@@ -207,7 +207,7 @@ function game(){
                 var distY = player.y - trapIndex[eTrap].y;
                 var dist = Math.sqrt((distX * distX) + (distY * distY));
 
-                if(dist < trapIndex[eTrap].radius){
+                if(dist <= trapIndex[eTrap].radius){
                     //remove trap from screen if touched
                     health--;
                     trapIndex.splice(eTrap, 1);
