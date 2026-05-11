@@ -10,7 +10,7 @@ var maxSpeed = 1;
 var numberOfChips;
 var numberOfTraps;
 var score = 0;
-var lowestTime = 0; //checks against timer at win for if it should replace or not
+var lowestTime = 1000000; //checks against timer at win for if it should replace or not
 var timer = 0; //for the clock in game
 
 //rat sprite
@@ -69,7 +69,7 @@ function setRandomNumber(){
 
 var myBall = createGameObject();
 var myBalls = [];
-var numberOfDots = 50;
+var numberOfDots = 2;
 
 var player = createGameObject();
 player.x = canvas.width/2;
@@ -89,17 +89,19 @@ for(var i=0; i < numberOfDots; i++){
 
 
 
-function drawHUD(){
-    pen.fillStyle = "black";
-    pen.font = "14px Arial";
-    pen.fillText(`Ships Defeated: ${score} | Ships Left: ${numberOfChips}`, 10, 25)
-    pen.fillText(`time: ${timer/100}`, 10, 40)
-}
+
 
 function game(){
     pen.clearRect(0, 0, canvas.width, canvas.height);
     switch(states){
         case "game":
+            function drawHUD(){
+                pen.fillStyle = "black";
+                pen.font = "14px Arial";
+                pen.fillText(`Ships Defeated: ${score} | Ships Left: ${numberOfChips}`, 10, 25)
+                pen.fillText(`time: ${timer/100}`, 10, 40)
+            }
+
             numberOfChips = myBalls.length;
             
             timer++
@@ -134,7 +136,7 @@ function game(){
             player.y += player.velocityY;
 
             //draw sprite for player
-            player.drawBall();
+            // player.drawBall();
             player.drawspritePlayer();
 
             for(var i=0; i<myBalls.length; i++){
@@ -165,10 +167,29 @@ function game(){
             pen.fillStyle = "black";
             pen.font = "24px Arial";
             var text = "You Won";
+            
+            //checks for lowest time for a highscore
+            var parTimeText = 0
+            if(lowestTime > timer){
+                parTimeText = timer;
+                lowestTime = parTimeText;
+            }
+
             pen.fillText(text, canvas.width/2 - pen.measureText(text).width/2, canvas.height/2 - 20);
+            pen.fillText(`Your Time: ${timer/100}`, canvas.width/2 - pen.measureText(text).width/2 - 25, canvas.height/2 + 60);
+            pen.fillText(`Par Time: ${lowestTime/100}`, canvas.width/2 - pen.measureText(text).width/2 - 20, canvas.height/2 + 30);
+
+        //restart game
             if(spaceBar)
             {
-                console.log("test")
+                for(var i=0; i < numberOfDots; i++){
+                    myBalls[i] = createGameObject();
+                }
+                timer = 0;
+                score = 0;
+                player.x = canvas.width/2;
+                player.y = canvas.height/2;
+                states = "game";
             }
         break;
     }
