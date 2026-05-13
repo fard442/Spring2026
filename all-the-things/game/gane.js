@@ -109,17 +109,17 @@ player.height = 100;
 player.color1 = "purple";
 player.spritePlayer = rat;
 
+
+
 //game state machine
-var states = ["game", "win"];
-states = "game";
+var states = ["game", "win", "lose", "menus"];
+states = "menus";
 
 //connects cheese/ball to gameObject setup code
 for(var i=0; i < numberOfDots; i++){
     myBalls[i] = createGameObject();
     myBalls[i].spriteCollectable = cheese;
 }
-
-
 
 
 
@@ -284,6 +284,20 @@ function game(){
                 numberOfTraps = 0;
                 player.x = canvas.width/2;
                 player.y = canvas.height/2;
+                states = "game";
+            }
+        break;
+        case "menus":
+            pen.fillStyle = "black";
+            pen.font = "24px Arial";
+            text = "Rat Game 3";
+
+            pen.fillText(text, canvas.width/2 - pen.measureText(text).width/2, canvas.height/2 - 40);
+            pen.fillText(`Press Space to start.`, canvas.width/2 - pen.measureText(text).width/2 - 35, canvas.height/2 + 20);
+            pen.fillText(`Created by Marcus L.`, canvas.width/2 - pen.measureText(text).width/2 - 35, 550);
+
+            if(spaceBar)
+            {
                 states = "game";
             }
         break;
