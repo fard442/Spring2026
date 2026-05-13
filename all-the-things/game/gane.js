@@ -146,6 +146,8 @@ function game(){
                 states = "win";
             }
 
+
+            //add sprite changing directions for left and right
             if(w || up) //very shortened (w == true || up == true) code
                 {
                 player.velocityY -= acceleration;
