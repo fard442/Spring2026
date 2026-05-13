@@ -12,6 +12,7 @@ var down = false;
 var left = false;
 var right = false;
 
+//pressing a key
 function keydown(e)
 {
     // console.log("pressed " + e.key);
@@ -56,6 +57,7 @@ function keydown(e)
     }
 }
 
+//releasing a key
 function keyup(e)
 {
     // console.log("released " + e.key);
