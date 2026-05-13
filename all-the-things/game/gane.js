@@ -1,11 +1,12 @@
 var canvas = document.getElementById("myCanvas");
 var pen = canvas.getContext("2d");
 
+//sets fps for game and update rate for anything in game state
 var interval = 1000/60;
 setInterval(game, interval);
 
+//main variables
 var health = 10;
-
 var acceleration = 0.6; 
 var friction = 0.88;
 var maxSpeed = 1;
@@ -19,11 +20,12 @@ var timer = 0; //for the clock in game
 var rat = document.getElementById("rat");
 
 //trap sprite
-//var trap = document.getElementById
+var trap = document.getElementById("ratTrap");
 
 //cheese sprite
 var collectable = document.getElementById("cheese");
 
+//setup stuff to be used in the game
 function createGameObject(){
     var gameObject = {
         x:randomNumber(115, canvas.width - 115),
@@ -87,6 +89,7 @@ var trap = createGameObject();
 var trapIndex = [];
 var numberOfTraps = 0;
 
+//connects trap to gameObject setup code
 for(var i=0; i < numberOfTraps; i++){
     trapIndex[i] = createGameObject();
     trapIndex[i].spriteTrap = ratTrap;
@@ -97,7 +100,7 @@ var myBall = createGameObject();
 var myBalls = [];
 var numberOfDots = 50;
 
-//player
+//player variables
 var player = createGameObject();
 player.x = canvas.width/2;
 player.y = canvas.height/2;
@@ -110,6 +113,7 @@ player.spritePlayer = rat;
 var states = ["game", "win"];
 states = "game";
 
+//connects cheese/ball to gameObject setup code
 for(var i=0; i < numberOfDots; i++){
     myBalls[i] = createGameObject();
     myBalls[i].spriteCollectable = cheese;
@@ -132,14 +136,16 @@ function game(){
             }
 
             numberOfChips = myBalls.length;
-
             numberOfTraps = trapIndex.length;
             
+            //timer in game
             timer++
 
+            //check if win
             if(numberOfChips <= 0){
                 states = "win";
             }
+
             if(w || up) //very shortened (w == true || up == true) code
                 {
                 player.velocityY -= acceleration;
@@ -170,27 +176,25 @@ function game(){
             player.y += player.velocityY;
 
             //draw sprite for player
-            // player.drawBall();
             player.drawSpritePlayer();
 
+            //draws sprites for cheese and trap
             for(var i=0; i<myBalls.length; i++){
                 myBalls[i].drawSpriteCollectable();
             }
-
             for(var i=0; i<trapIndex.length; i++){
                 trapIndex[i].drawSpriteTrap();
             }
 
 
-            //collision of balls and traps
+            //collision of cheese and the changes associated
             for(var eBalls = 0; eBalls < myBalls.length; eBalls++){
-                //distance formula unknown
                 var distX = player.x - myBalls[eBalls].x;
                 var distY = player.y - myBalls[eBalls].y;
                 var dist = Math.sqrt((distX * distX) + (distY * distY));
 
+                //removes from screen, adds score, and spawns trap
                 if(dist <= myBalls[eBalls].radius){
-                    //remove cheese from screen if hit
                     score++;
                     numberOfTraps++;
                     for(var i=0; i < numberOfTraps; i++){
@@ -201,14 +205,15 @@ function game(){
                     break;
                 }
             }
+
+            //collision of traps and stuff
             for(var eTrap = 0; eTrap < trapIndex.length; eTrap++){
-                //distance formula unknown
                 var distX = player.x - trapIndex[eTrap].x;
                 var distY = player.y - trapIndex[eTrap].y;
                 var dist = Math.sqrt((distX * distX) + (distY * distY));
 
+                //removes trap from screen and decreases health points
                 if(dist <= trapIndex[eTrap].radius){
-                    //remove trap from screen if touched
                     health--;
                     trapIndex.splice(eTrap, 1);
                     break;
@@ -219,7 +224,6 @@ function game(){
             break;
 
         case "win":
-            //add spacebar restarting game and highscore display
             pen.fillStyle = "black";
             pen.font = "24px Arial";
             var text = "You Won";
@@ -231,11 +235,12 @@ function game(){
                 lowestTime = parTimeText;
             }
 
+            //displays text
             pen.fillText(text, canvas.width/2 - pen.measureText(text).width/2, canvas.height/2 - 20);
             pen.fillText(`Your Time: ${timer/100}`, canvas.width/2 - pen.measureText(text).width/2 - 25, canvas.height/2 + 60);
             pen.fillText(`Par Time: ${lowestTime/100}`, canvas.width/2 - pen.measureText(text).width/2 - 20, canvas.height/2 + 30);
 
-        //restart game
+            //restart game
             if(spaceBar)
             {
                 for(var i=0; i < numberOfDots; i++){
@@ -259,10 +264,11 @@ function game(){
             pen.font = "24px Arial";
             text = "You Lose, Rat";
 
+            //displays text
             pen.fillText(text, canvas.width/2 - pen.measureText(text).width/2, canvas.height/2 - 20);
             pen.fillText(`Your Time: ${timer/100}`, canvas.width/2 - pen.measureText(text).width/2 - 20, canvas.height/2 + 30);
 
-            //restart game loops
+            //restart game loop
             if(spaceBar)
             {
                 for(var i=0; i < numberOfDots; i++){
